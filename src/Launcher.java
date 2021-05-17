@@ -2,10 +2,10 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static java.lang.Integer.parseInt;
 
@@ -70,12 +70,14 @@ public class Launcher {
         {
             String content = Files.readString(filePath);
 
-            content = content.replaceAll(", .; .\\.", " ");
-            String[] toto = content.split("\\s+");
+            content = content.replaceAll("[, .;]", " ");
+            String[] contentSlit = content.split("\\s+");
 
-            for (String t: toto) {
+            Stream<String> stream = Arrays.stream(contentSlit);
 
-            }
+            Map<String, Long> countByWord = stream.filter(s -> !s.isBlank()).map(String::toLowerCase).collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
+
+            //countByWord.entrySet().stream().sorted(Comparator.<Map.Entry<String, Long>, Long>comparing());
 
         }
         catch (IOException e)
